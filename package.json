@@ -1,0 +1,42 @@
+{
+  "name": "generation-plov",
+  "version": "1.0.0",
+  "description": "Reactive framework for build of interface",
+  "main": "src/main.ts",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview",
+    "lint": "npx eslint . --ext .js,.jsx,.ts,.tsx,.json",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "prepare": "husky install"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/kritzona/generation-plov-js.git"
+  },
+  "author": "withbottlesangria",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/kritzona/generation-plov-js/issues"
+  },
+  "homepage": "https://github.com/kritzona/generation-plov-js#readme",
+  "devDependencies": {
+    "@commitlint/cli": "^17.0.2",
+    "@commitlint/config-conventional": "^17.0.2",
+    "@typescript-eslint/eslint-plugin": "^5.28.0",
+    "@typescript-eslint/eslint-plugin-tslint": "^5.28.0",
+    "@typescript-eslint/parser": "^5.28.0",
+    "@typescript-eslint/scope-manager": "^5.28.0",
+    "@typescript-eslint/typescript-estree": "^5.28.0",
+    "@typescript-eslint/utils": "^5.28.0",
+    "eslint": "^8.17.0",
+    "eslint-config-prettier": "^8.5.0",
+    "eslint-plugin-prettier": "^4.0.0",
+    "husky": "^8.0.1",
+    "prettier": "^2.7.0",
+    "ts-node": "^10.8.1",
+    "typescript": "^4.7.3",
+    "vite": "^2.9.12"
+  }
+}
