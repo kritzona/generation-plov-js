@@ -10,7 +10,7 @@ class VirtualDomNode {
   constructor(
     private _tagName: string,
     private _props: Record<string, string>,
-    private _children: VirtualDomNode[]
+    private _children: (VirtualDomNode | string)[]
   ) {}
 
   public get key() {
@@ -31,12 +31,24 @@ class VirtualDomNode {
     return this._tagName;
   }
 
+  public set tagName(value: string) {
+    this._tagName = value;
+  }
+
   public get props() {
     return this._props;
   }
 
+  public set props(value: Record<string, string>) {
+    this._props = value;
+  }
+
   public get children() {
     return this._children;
+  }
+
+  public set children(value: (VirtualDomNode | string)[]) {
+    this._children = value;
   }
 }
 

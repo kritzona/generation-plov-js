@@ -1,7 +1,7 @@
 import { ComponentConstructor } from '@/component/types';
 import VirtualDomNode from './virtual-dom-node';
 
-const createComponent = (
+const componentFactory = (
   Component: ComponentConstructor,
   props: Record<string, string>
 ): VirtualDomNode => {
@@ -16,10 +16,10 @@ const createComponent = (
 const elementFactory = (
   tagName: string | ComponentConstructor,
   props: Record<string, string>,
-  children: VirtualDomNode[]
+  children: (VirtualDomNode | string)[]
 ): VirtualDomNode => {
   if (typeof tagName !== 'string') {
-    return createComponent(tagName, props);
+    return componentFactory(tagName, props);
   }
 
   return new VirtualDomNode(tagName, props, children);

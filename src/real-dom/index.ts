@@ -24,7 +24,7 @@ class RealDom {
     this.mount(node, this._rootElement);
   }
 
-  public mount(node: VirtualDomNode, parentElement: HTMLElement) {
+  public mount(node: VirtualDomNode, parentElement?: HTMLElement) {
     const { props, children, component } = node;
 
     const element = this._elementFactory(node);
@@ -33,13 +33,24 @@ class RealDom {
       element.setAttribute(prop, value);
     }
 
-    children.forEach((childNode) => this.mount(childNode, element));
+    children.forEach((childNode) => {
+      if (typeof childNode !== 'string') {
+        this.mount(childNode, element);
 
-    component && component.onMountStart();
+        return;
+      }
 
-    parentElement.appendChild(element);
+      const childTextElement = document.createTextNode(childNode);
+      element.appendChild(childTextElement);
+    });
 
-    component && component.onMountEnd();
+    if (parentElement) {
+      component && component.onMountStart();
+
+      parentElement.appendChild(element);
+
+      component && component.onMountEnd();
+    }
   }
 }
 
