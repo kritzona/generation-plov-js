@@ -1,13 +1,13 @@
 import VirtualDomNode from './virtual-dom-node';
 
 class VirtualDom {
-  private _tree: VirtualDomNode | null = null;
+  constructor(private _tree: VirtualDomNode) {}
 
   public get tree() {
     return this._tree;
   }
 
-  public set tree(value: VirtualDomNode | null) {
+  public set tree(value: VirtualDomNode) {
     this._tree = value;
   }
 }
