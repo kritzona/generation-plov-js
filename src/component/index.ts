@@ -1,3 +1,4 @@
+import Subscriber from '@/subscriber';
 import VirtualDomNode from '@/virtual-dom/virtual-dom-node';
 import subscribeOnChange from './subscribe-on-change';
 
@@ -5,11 +6,15 @@ abstract class Component<
   P extends Record<string, unknown>,
   S extends Record<string, unknown>
 > {
+  private _initialProps: Partial<P> = {};
+
   private _props: Partial<P> = {};
   private _state: Partial<S> = {};
 
+  private _subscribersOnUpdate = new Subscriber();
+
   constructor(props: P) {
-    this.props = props;
+    this._initialProps = props;
   }
 
   protected get props() {
@@ -28,21 +33,37 @@ abstract class Component<
     this._state = subscribeOnChange<S>(value, () => this.update());
   }
 
-  protected update(): void {
-    this.render();
+  protected create() {
+    this.onCreateStart();
+
+    this.props = this._initialProps;
+
+    this.onCreateEnd();
   }
 
-  protected abstract onCreateStart(): void;
+  public subscribeOnUpdate(subscriber: () => void) {
+    this._subscribersOnUpdate.subscribe(subscriber);
+  }
 
-  protected abstract onCreateEnd(): void;
+  protected update(): void {
+    this.onUpdateStart();
 
-  protected abstract onMountStart(): void;
+    this._subscribersOnUpdate.notify();
 
-  protected abstract onMountEnd(): void;
+    this.onUpdateEnd();
+  }
 
-  protected abstract onUpdateStart(): void;
+  public abstract onCreateStart(): void;
 
-  protected abstract onUpdateEnd(): void;
+  public abstract onCreateEnd(): void;
+
+  public abstract onMountStart(): void;
+
+  public abstract onMountEnd(): void;
+
+  public abstract onUpdateStart(): void;
+
+  public abstract onUpdateEnd(): void;
 
   public abstract render(): VirtualDomNode;
 }

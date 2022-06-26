@@ -6,7 +6,9 @@ const createComponent = (
   props: Record<string, string>
 ): VirtualDomNode => {
   const component = new Component(props);
+
   const virtualDomNode = component.render();
+  virtualDomNode.component = component;
 
   return virtualDomNode;
 };
