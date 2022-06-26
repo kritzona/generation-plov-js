@@ -31,24 +31,24 @@ class VirtualDomNode {
     return this._tagName;
   }
 
-  public set tagName(value: string) {
-    this._tagName = value;
-  }
-
   public get props() {
     return this._props;
-  }
-
-  public set props(value: Record<string, string>) {
-    this._props = value;
   }
 
   public get children() {
     return this._children;
   }
 
-  public set children(value: (VirtualDomNode | string)[]) {
-    this._children = value;
+  public update() {
+    if (!this._component) {
+      return;
+    }
+
+    const node = this._component.render();
+
+    this._tagName = node.tagName;
+    this._props = node.props;
+    this._children = node.children;
   }
 }
 

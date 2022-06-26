@@ -8,6 +8,12 @@ class RealDom {
   private _elementFactory(node: VirtualDomNode): HTMLElement {
     const { key, tagName } = node;
 
+    const clearElement = (element: HTMLElement) => {
+      const children = Array.from(element.childNodes);
+
+      children.forEach((child) => child.remove());
+    };
+
     let element;
     if (this._elementMap.get(key)) {
       element = this._elementMap.get(key);
@@ -16,6 +22,8 @@ class RealDom {
 
       this._elementMap.set(key, element);
     }
+
+    clearElement(element);
 
     return element;
   }
@@ -51,6 +59,16 @@ class RealDom {
 
       component && component.onMountEnd();
     }
+  }
+
+  public update(node: VirtualDomNode) {
+    const { component } = node;
+
+    component && component.onUpdateStart();
+
+    this.mount(node);
+
+    component && component.onUpdateEnd();
   }
 }
 

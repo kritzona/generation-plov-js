@@ -1,11 +1,9 @@
 import GenerationPlov from '@/generation-plov';
 import elementFactory from '@/virtual-dom/element-factory';
+import Header from '@/test-components/header';
 
 new GenerationPlov(
-  elementFactory('div', { class: 'test' }, [
-    'kek',
-    elementFactory('h1', {}, []),
-  ]),
+  elementFactory(Header, {}, []),
   document.getElementById('root')
 );
 

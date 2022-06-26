@@ -12,11 +12,14 @@ class GenerationPlov {
     }
 
     this._virtualDom = new VirtualDom(rootNode, (node) => {
-      this._realDom.mount(node);
+      this._realDom.update(node);
     });
 
     this._realDom = new RealDom(rootElement);
-    this._realDom.mountRoot(this._virtualDom.tree);
+
+    if (this._virtualDom.tree) {
+      this._realDom.mountRoot(this._virtualDom.tree);
+    }
   }
 }
 

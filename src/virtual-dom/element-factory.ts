@@ -6,6 +6,7 @@ const componentFactory = (
   props: Record<string, string>
 ): VirtualDomNode => {
   const component = new Component(props);
+  component.create();
 
   const virtualDomNode = component.render();
   virtualDomNode.component = component;

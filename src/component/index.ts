@@ -33,7 +33,7 @@ abstract class Component<
     this._state = subscribeOnChange<S>(value, () => this.update());
   }
 
-  protected create() {
+  public create() {
     this.onCreateStart();
 
     this.props = this._initialProps;
@@ -53,17 +53,29 @@ abstract class Component<
     this.onUpdateEnd();
   }
 
-  public abstract onCreateStart(): void;
+  public onCreateStart(): void {
+    return;
+  }
 
-  public abstract onCreateEnd(): void;
+  public onCreateEnd(): void {
+    return;
+  }
 
-  public abstract onMountStart(): void;
+  public onMountStart(): void {
+    return;
+  }
 
-  public abstract onMountEnd(): void;
+  public onMountEnd(): void {
+    return;
+  }
 
-  public abstract onUpdateStart(): void;
+  public onUpdateStart(): void {
+    return;
+  }
 
-  public abstract onUpdateEnd(): void;
+  public onUpdateEnd(): void {
+    return;
+  }
 
   public abstract render(): VirtualDomNode;
 }
