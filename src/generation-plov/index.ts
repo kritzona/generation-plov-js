@@ -22,9 +22,9 @@ class GenerationPlov {
     }
   }
 
-  private _onNodeUpdate(node: VirtualDomNode) {
+  private _onNodeUpdate = (node: VirtualDomNode) => {
     this._realDom.mount(node);
-  }
+  };
 }
 
 export default GenerationPlov;
