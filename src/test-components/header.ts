@@ -1,5 +1,5 @@
 import Component from '@/component';
-import elementFactory from '@/virtual-dom/element-factory';
+import elementFactory from '@/utils/element-factory';
 import VirtualDomNode from '@/virtual-dom/virtual-dom-node';
 
 class Header extends Component<Record<string, never>, { title: string }> {

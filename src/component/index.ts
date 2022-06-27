@@ -1,6 +1,6 @@
 import Subscriber from '@/subscriber';
 import VirtualDomNode from '@/virtual-dom/virtual-dom-node';
-import subscribeOnChange from './subscribe-on-change';
+import subscribeOnChange from '@/utils/subscribe-on-change';
 
 abstract class Component<
   P extends Record<string, unknown>,
