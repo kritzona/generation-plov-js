@@ -6,20 +6,24 @@ class GenerationPlov {
   private _virtualDom: VirtualDom;
   private _realDom: RealDom;
 
-  constructor(rootNode: VirtualDomNode, rootElement: HTMLElement | null) {
-    if (!rootElement) {
+  constructor(
+    private _rootNode: VirtualDomNode,
+    private _rootElement: HTMLElement | null
+  ) {
+    if (!this._rootElement) {
       throw new Error('rootElement not found');
     }
 
-    this._virtualDom = new VirtualDom(rootNode, (node) => {
-      this._realDom.update(node);
-    });
+    this._virtualDom = new VirtualDom(this._rootNode, this._onNodeUpdate);
 
-    this._realDom = new RealDom(rootElement);
-
+    this._realDom = new RealDom(this._rootElement);
     if (this._virtualDom.tree) {
       this._realDom.mountRoot(this._virtualDom.tree);
     }
+  }
+
+  private _onNodeUpdate(node: VirtualDomNode) {
+    this._realDom.mount(node);
   }
 }
 

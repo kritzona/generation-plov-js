@@ -5,16 +5,23 @@ class RealDom {
 
   constructor(private _rootElement: HTMLElement) {}
 
-  private _domElementFactory(node: VirtualDomNode): HTMLElement {
+  private _removeTails(node: VirtualDomNode): void {
+    const { key, children } = node;
+
+    this._elementMap.delete(key);
+
+    children.forEach((childNode) => {
+      if (childNode instanceof VirtualDomNode) {
+        this._removeTails(childNode);
+      }
+    });
+  }
+
+  private _getElementOrGenerate(node: VirtualDomNode): HTMLElement {
     const { key, tagName } = node;
 
-    const clearElement = (element: HTMLElement) => {
-      const children = Array.from(element.childNodes);
-
-      children.forEach((child) => child.remove());
-    };
-
     let element;
+
     if (this._elementMap.get(key)) {
       element = this._elementMap.get(key);
     } else {
@@ -23,7 +30,26 @@ class RealDom {
       this._elementMap.set(key, element);
     }
 
-    clearElement(element);
+    return element;
+  }
+
+  private _domElementFactory(node: VirtualDomNode): HTMLElement {
+    const { props, children } = node;
+
+    const element = this._getElementOrGenerate(node);
+
+    for (const [prop, value] of Object.entries(props)) {
+      element.setAttribute(prop, value);
+    }
+
+    const childElements = Array.from(element.childNodes);
+    childElements.forEach((element) => element.remove());
+
+    children.forEach((childNode) => {
+      if (childNode instanceof VirtualDomNode) {
+        this._removeTails(childNode);
+      }
+    });
 
     return element;
   }
@@ -33,16 +59,12 @@ class RealDom {
   }
 
   public mount(node: VirtualDomNode, parentElement?: HTMLElement) {
-    const { props, children, component } = node;
+    const { children, component } = node;
 
     const element = this._domElementFactory(node);
 
-    for (const [prop, value] of Object.entries(props)) {
-      element.setAttribute(prop, value);
-    }
-
     children.forEach((childNode) => {
-      if (typeof childNode !== 'string') {
+      if (childNode instanceof VirtualDomNode) {
         this.mount(childNode, element);
 
         return;
