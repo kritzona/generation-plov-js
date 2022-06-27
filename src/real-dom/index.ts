@@ -5,7 +5,7 @@ class RealDom {
 
   constructor(private _rootElement: HTMLElement) {}
 
-  private _elementFactory(node: VirtualDomNode): HTMLElement {
+  private _domElementFactory(node: VirtualDomNode): HTMLElement {
     const { key, tagName } = node;
 
     const clearElement = (element: HTMLElement) => {
@@ -35,7 +35,7 @@ class RealDom {
   public mount(node: VirtualDomNode, parentElement?: HTMLElement) {
     const { props, children, component } = node;
 
-    const element = this._elementFactory(node);
+    const element = this._domElementFactory(node);
 
     for (const [prop, value] of Object.entries(props)) {
       element.setAttribute(prop, value);
@@ -59,16 +59,6 @@ class RealDom {
 
       component && component.onMountEnd();
     }
-  }
-
-  public update(node: VirtualDomNode) {
-    const { component } = node;
-
-    component && component.onUpdateStart();
-
-    this.mount(node);
-
-    component && component.onUpdateEnd();
   }
 }
 
