@@ -1,3 +1,4 @@
+import elementFactory from '@/utils/element-factory';
 import RealDom from '@/real-dom';
 import VirtualDom from '@/virtual-dom';
 import VirtualDomNode from '@/virtual-dom/virtual-dom-node';
@@ -25,6 +26,8 @@ class GenerationPlov {
   private _onNodeUpdate = (node: VirtualDomNode) => {
     this._realDom.mount(node);
   };
+
+  public static elementFactory = elementFactory;
 }
 
 export default GenerationPlov;

@@ -1,5 +1,5 @@
 import Component from '@/component';
-import elementFactory from '@/utils/element-factory';
+import GenerationPlov from '@/generation-plov';
 import VirtualDomNode from '@/virtual-dom/virtual-dom-node';
 
 class Header extends Component<Record<string, never>, { title: string }> {
@@ -18,7 +18,7 @@ class Header extends Component<Record<string, never>, { title: string }> {
   }
 
   public render(): VirtualDomNode {
-    return elementFactory('div', { class: 'header' }, [
+    return GenerationPlov.elementFactory('div', { class: 'header' }, [
       String(this.state.title),
     ]);
   }
