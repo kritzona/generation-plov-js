@@ -1,6 +1,7 @@
 import Component from '@/component';
+import { VirtualDomNode } from './types';
 
-class VirtualDomElementNode {
+class VirtualDomElementNode implements VirtualDomNode {
   private _key = Symbol('key');
   private _component: isNullable<Component<AnyObject, AnyObject>> = null;
 
