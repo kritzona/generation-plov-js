@@ -1,5 +1,5 @@
 import Subscriber from '@/subscriber';
-import VirtualDomNode from '@/virtual-dom/virtual-dom-node';
+import VirtualDomElementNode from '@/virtual-dom/virtual-dom-element-node';
 import subscribeOnChange from '@/utils/subscribe-on-change';
 
 abstract class Component<
@@ -77,7 +77,7 @@ abstract class Component<
     return;
   }
 
-  public abstract render(): VirtualDomNode;
+  public abstract render(): VirtualDomElementNode;
 }
 
 export default Component;

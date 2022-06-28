@@ -1,10 +1,10 @@
 import { ComponentConstructor } from '@/component/types';
-import VirtualDomNode from '@/virtual-dom/virtual-dom-node';
+import VirtualDomElementNode from '@/virtual-dom/virtual-dom-element-node';
 
 const componentFactory = (
   Component: ComponentConstructor,
   props: StringObject
-): VirtualDomNode => {
+): VirtualDomElementNode => {
   const component = new Component(props);
   component.create();
 
@@ -17,13 +17,13 @@ const componentFactory = (
 const elementFactory = (
   tagName: string | ComponentConstructor,
   props: StringObject,
-  children: (VirtualDomNode | string)[]
-): VirtualDomNode => {
+  children: (VirtualDomElementNode | string)[]
+): VirtualDomElementNode => {
   if (typeof tagName !== 'string') {
     return componentFactory(tagName, props);
   }
 
-  return new VirtualDomNode(tagName, props, children);
+  return new VirtualDomElementNode(tagName, props, children);
 };
 
 export default elementFactory;

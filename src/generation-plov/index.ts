@@ -1,14 +1,14 @@
 import elementFactory from '@/utils/element-factory';
 import RealDom from '@/real-dom';
 import VirtualDom from '@/virtual-dom';
-import VirtualDomNode from '@/virtual-dom/virtual-dom-node';
+import VirtualDomElementNode from '@/virtual-dom/virtual-dom-element-node';
 
 class GenerationPlov {
   private _virtualDom: VirtualDom;
   private _realDom: RealDom;
 
   constructor(
-    private _rootNode: VirtualDomNode,
+    private _rootNode: VirtualDomElementNode,
     private _rootElement: isNullable<HTMLElement>
   ) {
     if (!this._rootElement) {
@@ -23,7 +23,7 @@ class GenerationPlov {
     }
   }
 
-  private _onNodeUpdate = (node: VirtualDomNode) => {
+  private _onNodeUpdate = (node: VirtualDomElementNode) => {
     this._realDom.mount(node);
   };
 

@@ -1,13 +1,13 @@
 import Component from '@/component';
 
-class VirtualDomNode {
+class VirtualDomElementNode {
   private _key = Symbol('key');
   private _component: isNullable<Component<AnyObject, AnyObject>> = null;
 
   constructor(
     private _tagName: string,
     private _props: StringObject,
-    private _children: (VirtualDomNode | string)[]
+    private _children: (VirtualDomElementNode | string)[]
   ) {}
 
   public get key() {
@@ -47,4 +47,4 @@ class VirtualDomNode {
   }
 }
 
-export default VirtualDomNode;
+export default VirtualDomElementNode;

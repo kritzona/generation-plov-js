@@ -1,23 +1,23 @@
-import VirtualDomNode from '@/virtual-dom/virtual-dom-node';
+import VirtualDomElementNode from '@/virtual-dom/virtual-dom-element-node';
 
 class RealDom {
   private _elementMap: Map<symbol, HTMLElement> = new Map();
 
   constructor(private _rootElement: HTMLElement) {}
 
-  private _removeTails(node: VirtualDomNode): void {
+  private _removeTails(node: VirtualDomElementNode): void {
     const { key, children } = node;
 
     this._elementMap.delete(key);
 
     children.forEach((childNode) => {
-      if (childNode instanceof VirtualDomNode) {
+      if (childNode instanceof VirtualDomElementNode) {
         this._removeTails(childNode);
       }
     });
   }
 
-  private _getElementOrGenerate(node: VirtualDomNode): HTMLElement {
+  private _getElementOrGenerate(node: VirtualDomElementNode): HTMLElement {
     const { key, tagName } = node;
 
     let element;
@@ -33,7 +33,7 @@ class RealDom {
     return element;
   }
 
-  private _domElementFactory(node: VirtualDomNode): HTMLElement {
+  private _domElementFactory(node: VirtualDomElementNode): HTMLElement {
     const { props, children } = node;
 
     const element = this._getElementOrGenerate(node);
@@ -46,7 +46,7 @@ class RealDom {
     childElements.forEach((element) => element.remove());
 
     children.forEach((childNode) => {
-      if (childNode instanceof VirtualDomNode) {
+      if (childNode instanceof VirtualDomElementNode) {
         this._removeTails(childNode);
       }
     });
@@ -54,17 +54,17 @@ class RealDom {
     return element;
   }
 
-  public mountRoot(node: VirtualDomNode) {
+  public mountRoot(node: VirtualDomElementNode) {
     this.mount(node, this._rootElement);
   }
 
-  public mount(node: VirtualDomNode, parentElement?: HTMLElement) {
+  public mount(node: VirtualDomElementNode, parentElement?: HTMLElement) {
     const { children, component } = node;
 
     const element = this._domElementFactory(node);
 
     children.forEach((childNode) => {
-      if (childNode instanceof VirtualDomNode) {
+      if (childNode instanceof VirtualDomElementNode) {
         this.mount(childNode, element);
 
         return;
