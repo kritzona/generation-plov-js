@@ -1,11 +1,10 @@
-import Component from '@/component';
-import { ComponentConstructor } from '@/component/types';
+import { AnyComponent, ComponentConstructor } from '@/component/types';
 import { VirtualDomNode, VirtualDomNodeChild } from './types';
 
 class VirtualDomComponentNode implements VirtualDomNode {
   private _key = Symbol('virtual-dom-component-node');
 
-  private _component: Component<AnyObject, AnyObject>;
+  private _component: AnyComponent;
 
   constructor(
     private _Component: ComponentConstructor,
@@ -15,7 +14,7 @@ class VirtualDomComponentNode implements VirtualDomNode {
     this._component = this._componentFactory();
   }
 
-  private _componentFactory() {
+  private _componentFactory(): AnyComponent {
     const component = new this._Component(this._props);
 
     return component;
@@ -25,7 +24,7 @@ class VirtualDomComponentNode implements VirtualDomNode {
     return this._key;
   }
 
-  public get component(): Component<AnyObject, AnyObject> {
+  public get component(): AnyComponent {
     return this._component;
   }
 

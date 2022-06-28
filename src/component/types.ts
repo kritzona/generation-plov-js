@@ -1,6 +1,5 @@
 import Component from '@/component';
 
-export type ComponentConstructor = new (...unknown) => Component<
-  AnyObject,
-  AnyObject
->;
+export type ComponentConstructor = new (...unknown) => AnyComponent;
+
+export type AnyComponent = Component<AnyObject, AnyObject>;

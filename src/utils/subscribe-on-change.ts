@@ -1,4 +1,4 @@
-const subscribeOnChange = <T extends Record<string, unknown>>(
+const subscribeOnChange = <T extends AnyObject>(
   target: Partial<T>,
   callback: () => void
 ): Partial<T> => {
