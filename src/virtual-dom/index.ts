@@ -1,7 +1,7 @@
 import VirtualDomNode from './virtual-dom-node';
 
 class VirtualDom {
-  private _tree: VirtualDomNode | null = null;
+  private _tree: isNullable<VirtualDomNode> = null;
 
   constructor(
     rootNode: VirtualDomNode,
@@ -14,7 +14,7 @@ class VirtualDom {
     return this._tree;
   }
 
-  public set tree(value: VirtualDomNode | null) {
+  public set tree(value: isNullable<VirtualDomNode>) {
     this._tree = value;
 
     if (this._tree) {

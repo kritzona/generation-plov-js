@@ -9,7 +9,7 @@ class GenerationPlov {
 
   constructor(
     private _rootNode: VirtualDomNode,
-    private _rootElement: HTMLElement | null
+    private _rootElement: isNullable<HTMLElement>
   ) {
     if (!this._rootElement) {
       throw new Error('rootElement not found');

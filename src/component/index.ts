@@ -3,8 +3,8 @@ import VirtualDomNode from '@/virtual-dom/virtual-dom-node';
 import subscribeOnChange from '@/utils/subscribe-on-change';
 
 abstract class Component<
-  P extends Record<string, unknown>,
-  S extends Record<string, unknown>
+  P extends MaybeEmptyObject<AnyObject>,
+  S extends MaybeEmptyObject<AnyObject>
 > {
   private _initialProps: Partial<P> = {};
 

@@ -3,7 +3,7 @@ import VirtualDomNode from '@/virtual-dom/virtual-dom-node';
 
 const componentFactory = (
   Component: ComponentConstructor,
-  props: Record<string, string>
+  props: StringObject
 ): VirtualDomNode => {
   const component = new Component(props);
   component.create();
@@ -16,7 +16,7 @@ const componentFactory = (
 
 const elementFactory = (
   tagName: string | ComponentConstructor,
-  props: Record<string, string>,
+  props: StringObject,
   children: (VirtualDomNode | string)[]
 ): VirtualDomNode => {
   if (typeof tagName !== 'string') {

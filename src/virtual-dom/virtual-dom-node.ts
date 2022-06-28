@@ -2,14 +2,11 @@ import Component from '@/component';
 
 class VirtualDomNode {
   private _key = Symbol('key');
-  private _component: Component<
-    Record<string, unknown>,
-    Record<string, unknown>
-  > | null = null;
+  private _component: isNullable<Component<AnyObject, AnyObject>> = null;
 
   constructor(
     private _tagName: string,
-    private _props: Record<string, string>,
+    private _props: StringObject,
     private _children: (VirtualDomNode | string)[]
   ) {}
 
@@ -21,9 +18,7 @@ class VirtualDomNode {
     return this._component;
   }
 
-  public set component(
-    value: Component<Record<string, unknown>, Record<string, unknown>> | null
-  ) {
+  public set component(value: isNullable<Component<AnyObject, AnyObject>>) {
     this._component = value;
   }
 

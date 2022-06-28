@@ -2,8 +2,8 @@ import Component from '@/component';
 import GenerationPlov from '@/generation-plov';
 import VirtualDomNode from '@/virtual-dom/virtual-dom-node';
 
-class Header extends Component<Record<string, never>, { title: string }> {
-  constructor(props: Record<string, never>) {
+class Header extends Component<EmptyObject, { title: string }> {
+  constructor(props: EmptyObject) {
     super(props);
 
     this.state = {
