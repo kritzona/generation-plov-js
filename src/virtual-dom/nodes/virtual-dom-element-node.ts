@@ -36,18 +36,6 @@ class VirtualDomElementNode implements VirtualDomNode {
     return this._children;
   }
 
-  public update() {
-    if (!this._component) {
-      return;
-    }
-
-    const node = this._component.render();
-
-    this._tagName = node.tagName;
-    this._props = node.props;
-    this._children = node.children;
-  }
-
   public patch(props: StringObject, children: VirtualDomNodeChild[]): void {
     this._props = { ...props };
     this._children = [...children];

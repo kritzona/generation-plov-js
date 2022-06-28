@@ -1,6 +1,6 @@
 import Subscriber from '@/subscriber';
-import VirtualDomElementNode from '@/virtual-dom/nodes/virtual-dom-element-node';
 import subscribeOnChange from '@/utils/subscribe-on-change';
+import { VirtualDomNode } from '@/virtual-dom/types';
 
 abstract class Component<
   P extends MaybeEmptyObject<AnyObject>,
@@ -77,7 +77,7 @@ abstract class Component<
     return;
   }
 
-  public abstract render(): VirtualDomElementNode;
+  public abstract render(): VirtualDomNode;
 }
 
 export default Component;

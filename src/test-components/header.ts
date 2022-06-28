@@ -1,6 +1,6 @@
 import Component from '@/component';
 import GenerationPlov from '@/generation-plov';
-import VirtualDomElementNode from '@/virtual-dom/nodes/virtual-dom-element-node';
+import { VirtualDomNode } from '@/virtual-dom/types';
 
 class Header extends Component<EmptyObject, { title: string }> {
   constructor(props: EmptyObject) {
@@ -17,7 +17,7 @@ class Header extends Component<EmptyObject, { title: string }> {
     }, 5000);
   }
 
-  public render(): VirtualDomElementNode {
+  public render(): VirtualDomNode {
     return GenerationPlov.elementFactory('div', { class: 'header' }, [
       String(this.state.title),
     ]);
