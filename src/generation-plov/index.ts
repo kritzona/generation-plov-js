@@ -1,7 +1,7 @@
 import elementFactory from '@/utils/element-factory';
 import RealDom from '@/real-dom';
 import VirtualDom from '@/virtual-dom';
-import VirtualDomElementNode from '@/virtual-dom/virtual-dom-element-node';
+import VirtualDomElementNode from '@/virtual-dom/nodes/virtual-dom-element-node';
 
 class GenerationPlov {
   private _virtualDom: VirtualDom;

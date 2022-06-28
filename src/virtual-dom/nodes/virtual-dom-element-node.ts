@@ -1,5 +1,5 @@
 import { AnyComponent } from '@/component/types';
-import { VirtualDomNode, VirtualDomNodeChild } from './types';
+import { VirtualDomNode, VirtualDomNodeChild } from '../types';
 
 class VirtualDomElementNode implements VirtualDomNode {
   private _key = Symbol('virtual-dom-element-key');

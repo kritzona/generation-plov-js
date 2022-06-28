@@ -1,5 +1,5 @@
 import { ComponentConstructor } from '@/component/types';
-import VirtualDomElementNode from '@/virtual-dom/virtual-dom-element-node';
+import VirtualDomElementNode from '@/virtual-dom/nodes/virtual-dom-element-node';
 
 const componentFactory = (
   Component: ComponentConstructor,

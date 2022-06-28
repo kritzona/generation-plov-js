@@ -1,6 +1,6 @@
 import Component from '@/component';
 import GenerationPlov from '@/generation-plov';
-import VirtualDomElementNode from '@/virtual-dom/virtual-dom-element-node';
+import VirtualDomElementNode from '@/virtual-dom/nodes/virtual-dom-element-node';
 
 class Header extends Component<EmptyObject, { title: string }> {
   constructor(props: EmptyObject) {

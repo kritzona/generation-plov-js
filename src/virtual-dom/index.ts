@@ -1,4 +1,4 @@
-import VirtualDomElementNode from './virtual-dom-element-node';
+import VirtualDomElementNode from './nodes/virtual-dom-element-node';
 
 class VirtualDom {
   private _tree: isNullable<VirtualDomElementNode> = null;

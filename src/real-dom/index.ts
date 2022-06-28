@@ -1,4 +1,4 @@
-import VirtualDomElementNode from '@/virtual-dom/virtual-dom-element-node';
+import VirtualDomElementNode from '@/virtual-dom/nodes/virtual-dom-element-node';
 
 class RealDom {
   private _elementMap: Map<symbol, HTMLElement> = new Map();

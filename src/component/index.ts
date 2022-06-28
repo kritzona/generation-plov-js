@@ -1,5 +1,5 @@
 import Subscriber from '@/subscriber';
-import VirtualDomElementNode from '@/virtual-dom/virtual-dom-element-node';
+import VirtualDomElementNode from '@/virtual-dom/nodes/virtual-dom-element-node';
 import subscribeOnChange from '@/utils/subscribe-on-change';
 
 abstract class Component<
