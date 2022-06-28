@@ -32,7 +32,9 @@ class VirtualDom {
         return;
       }
 
-      this._subscribeOnUpdate(childNode);
+      if (childNode instanceof VirtualDomElementNode) {
+        this._subscribeOnUpdate(childNode);
+      }
     });
   }
 

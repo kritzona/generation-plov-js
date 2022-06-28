@@ -1,14 +1,15 @@
 import Component from '@/component';
-import { VirtualDomNode } from './types';
+import { VirtualDomNode, VirtualDomNodeChild } from './types';
 
 class VirtualDomElementNode implements VirtualDomNode {
-  private _key = Symbol('key');
+  private _key = Symbol('virtual-dom-element-key');
+
   private _component: isNullable<Component<AnyObject, AnyObject>> = null;
 
   constructor(
     private _tagName: string,
     private _props: StringObject,
-    private _children: (VirtualDomElementNode | string)[]
+    private _children: VirtualDomNodeChild[]
   ) {}
 
   public get key() {
@@ -45,6 +46,11 @@ class VirtualDomElementNode implements VirtualDomNode {
     this._tagName = node.tagName;
     this._props = node.props;
     this._children = node.children;
+  }
+
+  public patch(props: StringObject, children: VirtualDomNodeChild[]): void {
+    this._props = { ...props };
+    this._children = [...children];
   }
 }
 

@@ -70,8 +70,10 @@ class RealDom {
         return;
       }
 
-      const childTextElement = document.createTextNode(childNode);
-      element.appendChild(childTextElement);
+      if (typeof childNode === 'string') {
+        const childTextElement = document.createTextNode(childNode);
+        element.appendChild(childTextElement);
+      }
     });
 
     if (parentElement) {
