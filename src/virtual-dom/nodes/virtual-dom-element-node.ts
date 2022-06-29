@@ -1,10 +1,7 @@
-import { AnyComponent } from '@/component/types';
 import { VirtualDomNode, VirtualDomNodeChild } from '../types';
 
 class VirtualDomElementNode implements VirtualDomNode {
   private _key = Symbol('virtual-dom-element-key');
-
-  private _component: isNullable<AnyComponent> = null;
 
   constructor(
     private _tagName: string,
@@ -14,14 +11,6 @@ class VirtualDomElementNode implements VirtualDomNode {
 
   public get key() {
     return this._key;
-  }
-
-  public get component() {
-    return this._component;
-  }
-
-  public set component(value: isNullable<AnyComponent>) {
-    this._component = value;
   }
 
   public get tagName() {
