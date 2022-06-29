@@ -37,7 +37,7 @@ class RealDom {
       if (childNode instanceof VirtualDomComponentNode) {
         const { component } = childNode;
 
-        component.mount(element);
+        component && component.mount(element);
       }
     });
 
@@ -56,7 +56,7 @@ class RealDom {
     } else if (node instanceof VirtualDomComponentNode) {
       const { component } = node;
 
-      element = component.baseElement || fallbackElement;
+      element = (component && component.baseElement) || fallbackElement;
     } else {
       element = fallbackElement;
     }

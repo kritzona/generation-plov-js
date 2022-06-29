@@ -9,11 +9,15 @@ class GenerationPlov {
     private _rootNode: VirtualDomNode,
     private _rootElement: isNullable<HTMLElement>
   ) {
+    this._init();
+  }
+
+  private _init() {
     if (!this._rootElement) {
       throw new Error('rootElement not found');
     }
 
-    this._virtualDom.patch(this._rootNode);
+    this._virtualDom.init(this._rootNode);
     this._virtualDom.realDom.mount(this._rootElement);
   }
 

@@ -38,7 +38,7 @@ abstract class Component<
   public create(): void {
     this.onCreateStart();
 
-    this._virtualDom.patch(this.render());
+    this._virtualDom.init(this.render());
 
     this.onCreateEnd();
   }

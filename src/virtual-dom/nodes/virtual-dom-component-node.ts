@@ -4,32 +4,19 @@ import { VirtualDomNode, VirtualDomNodeChild } from '../types';
 class VirtualDomComponentNode implements VirtualDomNode {
   private _key = Symbol('virtual-dom-component-node');
 
-  private _component: AnyComponent;
+  private _component: isNullable<AnyComponent> = null;
 
   constructor(
     private _Component: ComponentConstructor,
     private _props: StringObject,
     private _children: VirtualDomNodeChild[]
-  ) {
-    this._component = this._componentFactory();
-  }
-
-  private _componentFactory(): AnyComponent {
-    const component = new this._Component({
-      ...this._props,
-      children: this._children,
-    });
-
-    component.create();
-
-    return component;
-  }
+  ) {}
 
   public get key(): symbol {
     return this._key;
   }
 
-  public get component(): AnyComponent {
+  public get component(): isNullable<AnyComponent> {
     return this._component;
   }
 
@@ -41,9 +28,24 @@ class VirtualDomComponentNode implements VirtualDomNode {
     return this._children;
   }
 
+  public init() {
+    this._component = this._componentFactory();
+  }
+
   public patch(props: StringObject, children: VirtualDomNodeChild[]): void {
     this._props = { ...props };
     this._children = [...children];
+  }
+
+  private _componentFactory(): AnyComponent {
+    const component = new this._Component({
+      ...this._props,
+      children: this._children,
+    });
+
+    component.create();
+
+    return component;
   }
 }
 
