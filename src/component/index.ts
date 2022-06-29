@@ -1,11 +1,14 @@
 import Subscriber from '@/subscriber';
 import subscribeOnChange from '@/utils/subscribe-on-change';
+import VirtualDom from '@/virtual-dom';
 import { VirtualDomNode } from '@/virtual-dom/types';
 
 abstract class Component<
   P extends MaybeEmptyObject<AnyObject>,
   S extends MaybeEmptyObject<AnyObject>
 > {
+  private _virtualDom = new VirtualDom(this.render());
+
   private _initialProps: Partial<P> = {};
 
   private _props: Partial<P> = {};
@@ -33,12 +36,24 @@ abstract class Component<
     this._state = subscribeOnChange<S>(value, () => this.update());
   }
 
-  public create() {
+  public get baseElement(): HTMLElement {
+    return this._virtualDom.realDom.baseElement;
+  }
+
+  public create(): void {
     this.onCreateStart();
 
     this.props = this._initialProps;
 
     this.onCreateEnd();
+  }
+
+  public mount(parentElement: HTMLElement) {
+    this.onMountStart();
+
+    this._virtualDom.realDom.mount(parentElement);
+
+    this.onMountEnd();
   }
 
   public subscribeOnUpdate(subscriber: () => void) {

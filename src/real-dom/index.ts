@@ -1,88 +1,70 @@
+import VirtualDomComponentNode from '@/virtual-dom/nodes/virtual-dom-component-node';
 import VirtualDomElementNode from '@/virtual-dom/nodes/virtual-dom-element-node';
+import { VirtualDomNode } from '@/virtual-dom/types';
 
 class RealDom {
-  private _elementMap: Map<symbol, HTMLElement> = new Map();
+  private _baseElement: HTMLElement;
 
-  constructor(private _rootElement: HTMLElement) {}
-
-  private _removeTails(node: VirtualDomElementNode): void {
-    const { key, children } = node;
-
-    this._elementMap.delete(key);
-
-    children.forEach((childNode) => {
-      if (childNode instanceof VirtualDomElementNode) {
-        this._removeTails(childNode);
-      }
-    });
+  constructor(node: VirtualDomNode) {
+    this._baseElement = this._baseElementFactory(node);
   }
 
-  private _getElementOrGenerate(node: VirtualDomElementNode): HTMLElement {
-    const { key, tagName } = node;
-
-    let element;
-
-    if (this._elementMap.get(key)) {
-      element = this._elementMap.get(key);
-    } else {
-      element = document.createElement(tagName);
-
-      this._elementMap.set(key, element);
-    }
-
-    return element;
+  public get baseElement(): HTMLElement {
+    return this._baseElement;
   }
 
-  private _domElementFactory(node: VirtualDomElementNode): HTMLElement {
-    const { props, children } = node;
-
-    const element = this._getElementOrGenerate(node);
-
-    for (const [prop, value] of Object.entries(props)) {
-      element.setAttribute(prop, value);
-    }
-
-    const childElements = Array.from(element.childNodes);
-    childElements.forEach((element) => element.remove());
-
-    children.forEach((childNode) => {
-      if (childNode instanceof VirtualDomElementNode) {
-        this._removeTails(childNode);
-      }
-    });
-
-    return element;
-  }
-
-  public mountRoot(node: VirtualDomElementNode) {
-    this.mount(node, this._rootElement);
-  }
-
-  public mount(node: VirtualDomElementNode, parentElement?: HTMLElement) {
-    const { children, component } = node;
+  private _baseElementFactory(node: VirtualDomNode): HTMLElement {
+    const { children } = node;
 
     const element = this._domElementFactory(node);
 
-    children.forEach((childNode) => {
-      if (childNode instanceof VirtualDomElementNode) {
-        this.mount(childNode, element);
+    children.forEach((nodeChild) => {
+      if (typeof nodeChild === 'string') {
+        element.appendChild(document.createTextNode(nodeChild));
 
         return;
       }
 
-      if (typeof childNode === 'string') {
-        const childTextElement = document.createTextNode(childNode);
-        element.appendChild(childTextElement);
+      if (nodeChild instanceof VirtualDomElementNode) {
+        element.appendChild(this._domElementFactory(nodeChild));
+      }
+
+      if (nodeChild instanceof VirtualDomComponentNode) {
+        const { component } = nodeChild;
+
+        component.mount(element);
       }
     });
 
-    if (parentElement) {
-      component && component.onMountStart();
+    return element;
+  }
 
-      parentElement.appendChild(element);
+  private _domElementFactory(node: VirtualDomNode): HTMLElement {
+    const { props } = node;
 
-      component && component.onMountEnd();
+    let element;
+
+    if (node instanceof VirtualDomElementNode) {
+      const { tagName } = node;
+
+      element = document.createElement(tagName);
+
+      for (const [prop, value] of Object.entries(props)) {
+        element.setAttribute(prop, value);
+      }
+    } else if (node instanceof VirtualDomComponentNode) {
+      const { component } = node;
+
+      element = component.baseElement;
+    } else {
+      element = document.createElement('div');
     }
+
+    return element;
+  }
+
+  public mount(parentElement: HTMLElement) {
+    parentElement.appendChild(this._baseElement);
   }
 }
 
