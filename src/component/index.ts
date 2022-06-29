@@ -1,23 +1,21 @@
-import Subscriber from '@/subscriber';
-import VirtualDomNode from '@/virtual-dom/virtual-dom-node';
 import subscribeOnChange from '@/utils/subscribe-on-change';
+import VirtualDom from '@/virtual-dom';
+import { VirtualDomNode } from '@/virtual-dom/types';
 
 abstract class Component<
-  P extends Record<string, unknown>,
-  S extends Record<string, unknown>
+  P extends MaybeEmptyObject<AnyObject>,
+  S extends MaybeEmptyObject<AnyObject>
 > {
-  private _initialProps: Partial<P> = {};
+  private _virtualDom: VirtualDom = new VirtualDom();
 
   private _props: Partial<P> = {};
   private _state: Partial<S> = {};
 
-  private _subscribersOnUpdate = new Subscriber();
-
   constructor(props: P) {
-    this._initialProps = props;
+    this._props = props;
   }
 
-  protected get props() {
+  protected get props(): Partial<P> {
     return this._props;
   }
 
@@ -25,7 +23,7 @@ abstract class Component<
     this._props = subscribeOnChange<P>(value, () => this.update());
   }
 
-  protected get state() {
+  protected get state(): Partial<S> {
     return this._state;
   }
 
@@ -33,47 +31,55 @@ abstract class Component<
     this._state = subscribeOnChange<S>(value, () => this.update());
   }
 
-  public create() {
+  public get baseElement(): isNullable<HTMLElement> {
+    return this._virtualDom.realDom.baseElement;
+  }
+
+  public create(): void {
     this.onCreateStart();
 
-    this.props = this._initialProps;
+    this._virtualDom.patch(this.render());
 
     this.onCreateEnd();
   }
 
-  public subscribeOnUpdate(subscriber: () => void) {
-    this._subscribersOnUpdate.subscribe(subscriber);
+  public mount(parentElement: HTMLElement): void {
+    this.onMountStart();
+
+    this._virtualDom.realDom.mount(parentElement);
+
+    this.onMountEnd();
   }
 
-  protected update(): void {
+  public update(): void {
     this.onUpdateStart();
 
-    this._subscribersOnUpdate.notify();
+    this._virtualDom.patch(this.render());
 
     this.onUpdateEnd();
   }
 
-  public onCreateStart(): void {
+  protected onCreateStart(): void {
     return;
   }
 
-  public onCreateEnd(): void {
+  protected onCreateEnd(): void {
     return;
   }
 
-  public onMountStart(): void {
+  protected onMountStart(): void {
     return;
   }
 
-  public onMountEnd(): void {
+  protected onMountEnd(): void {
     return;
   }
 
-  public onUpdateStart(): void {
+  protected onUpdateStart(): void {
     return;
   }
 
-  public onUpdateEnd(): void {
+  protected onUpdateEnd(): void {
     return;
   }
 

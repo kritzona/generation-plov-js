@@ -1,45 +1,23 @@
-import VirtualDomNode from './virtual-dom-node';
+import RealDom from '@/real-dom';
+import { VirtualDomNode } from './types';
 
 class VirtualDom {
-  private _tree: VirtualDomNode | null = null;
+  private _tree: isNullable<VirtualDomNode> = null;
 
-  constructor(
-    rootNode: VirtualDomNode,
-    private _onUpdate: (node: VirtualDomNode) => void
-  ) {
-    this.tree = rootNode;
-  }
+  private _realDom = new RealDom();
 
-  public get tree() {
+  public get tree(): isNullable<VirtualDomNode> {
     return this._tree;
   }
 
-  public set tree(value: VirtualDomNode | null) {
-    this._tree = value;
-
-    if (this._tree) {
-      this._subscribeOnUpdate(this._tree);
-    }
+  public get realDom(): RealDom {
+    return this._realDom;
   }
 
-  private _subscribeOnUpdate(node: VirtualDomNode) {
-    const { component, children } = node;
+  public patch(node: VirtualDomNode) {
+    this._tree = node;
 
-    component && component.subscribeOnUpdate(() => this._updateNode(node));
-
-    children.forEach((childNode) => {
-      if (typeof childNode === 'string') {
-        return;
-      }
-
-      this._subscribeOnUpdate(childNode);
-    });
-  }
-
-  private _updateNode(node: VirtualDomNode) {
-    node.update();
-
-    this._onUpdate(node);
+    this._realDom.patchBaseElement(this._tree);
   }
 }
 

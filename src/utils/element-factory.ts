@@ -1,29 +1,18 @@
 import { ComponentConstructor } from '@/component/types';
-import VirtualDomNode from '@/virtual-dom/virtual-dom-node';
-
-const componentFactory = (
-  Component: ComponentConstructor,
-  props: Record<string, string>
-): VirtualDomNode => {
-  const component = new Component(props);
-  component.create();
-
-  const virtualDomNode = component.render();
-  virtualDomNode.component = component;
-
-  return virtualDomNode;
-};
+import VirtualDomComponentNode from '@/virtual-dom/nodes/virtual-dom-component-node';
+import VirtualDomElementNode from '@/virtual-dom/nodes/virtual-dom-element-node';
+import { VirtualDomNode, VirtualDomNodeChild } from '@/virtual-dom/types';
 
 const elementFactory = (
   tagName: string | ComponentConstructor,
-  props: Record<string, string>,
-  children: (VirtualDomNode | string)[]
+  props: StringObject,
+  children: VirtualDomNodeChild[]
 ): VirtualDomNode => {
-  if (typeof tagName !== 'string') {
-    return componentFactory(tagName, props);
+  if (typeof tagName === 'function') {
+    return new VirtualDomComponentNode(tagName, props, children);
   }
 
-  return new VirtualDomNode(tagName, props, children);
+  return new VirtualDomElementNode(tagName, props, children);
 };
 
 export default elementFactory;
