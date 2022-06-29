@@ -16,12 +16,14 @@ class VirtualDom {
     return this._tree;
   }
 
-  public set tree(value: VirtualDomNode) {
-    this._tree = value;
-  }
-
   public get realDom(): RealDom {
     return this._realDom;
+  }
+
+  public update(node: VirtualDomNode) {
+    this._tree = node;
+
+    this._realDom.updateBaseElement(node);
   }
 }
 

@@ -16,7 +16,14 @@ class RealDom {
   private _baseElementFactory(node: VirtualDomNode): HTMLElement {
     const { children } = node;
 
-    const element = this._domElementFactory(node);
+    let element;
+    if (node instanceof VirtualDomComponentNode) {
+      const { component } = node;
+
+      element = component.baseElement;
+    } else {
+      element = this._domElementFactory(node);
+    }
 
     children.forEach((nodeChild) => {
       if (typeof nodeChild === 'string') {
@@ -65,6 +72,10 @@ class RealDom {
 
   public mount(parentElement: HTMLElement) {
     parentElement.appendChild(this._baseElement);
+  }
+
+  public updateBaseElement(node: VirtualDomNode) {
+    this._baseElement = this._baseElementFactory(node);
   }
 }
 

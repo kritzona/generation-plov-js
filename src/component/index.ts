@@ -1,4 +1,3 @@
-import Subscriber from '@/subscriber';
 import subscribeOnChange from '@/utils/subscribe-on-change';
 import VirtualDom from '@/virtual-dom';
 import { VirtualDomNode } from '@/virtual-dom/types';
@@ -13,8 +12,6 @@ abstract class Component<
 
   private _props: Partial<P> = {};
   private _state: Partial<S> = {};
-
-  private _subscribersOnUpdate = new Subscriber();
 
   constructor(props: P) {
     this._initialProps = props;
@@ -56,39 +53,35 @@ abstract class Component<
     this.onMountEnd();
   }
 
-  public subscribeOnUpdate(subscriber: () => void) {
-    this._subscribersOnUpdate.subscribe(subscriber);
-  }
-
-  protected update(): void {
+  public update() {
     this.onUpdateStart();
 
-    this._subscribersOnUpdate.notify();
+    this._virtualDom.update(this.render());
 
     this.onUpdateEnd();
   }
 
-  public onCreateStart(): void {
+  protected onCreateStart(): void {
     return;
   }
 
-  public onCreateEnd(): void {
+  protected onCreateEnd(): void {
     return;
   }
 
-  public onMountStart(): void {
+  protected onMountStart(): void {
     return;
   }
 
-  public onMountEnd(): void {
+  protected onMountEnd(): void {
     return;
   }
 
-  public onUpdateStart(): void {
+  protected onUpdateStart(): void {
     return;
   }
 
-  public onUpdateEnd(): void {
+  protected onUpdateEnd(): void {
     return;
   }
 

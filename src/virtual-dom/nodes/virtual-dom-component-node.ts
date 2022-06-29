@@ -15,7 +15,12 @@ class VirtualDomComponentNode implements VirtualDomNode {
   }
 
   private _componentFactory(): AnyComponent {
-    const component = new this._Component(this._props);
+    const component = new this._Component({
+      ...this._props,
+      children: this._children,
+    });
+
+    component.create();
 
     return component;
   }
