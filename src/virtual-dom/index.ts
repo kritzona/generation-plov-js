@@ -2,17 +2,11 @@ import RealDom from '@/real-dom';
 import { VirtualDomNode } from './types';
 
 class VirtualDom {
-  private _tree: VirtualDomNode;
+  private _tree: isNullable<VirtualDomNode> = null;
 
-  private _realDom: RealDom;
+  private _realDom = new RealDom();
 
-  constructor(node: VirtualDomNode) {
-    this._tree = node;
-
-    this._realDom = new RealDom(this._tree);
-  }
-
-  public get tree(): VirtualDomNode {
+  public get tree(): isNullable<VirtualDomNode> {
     return this._tree;
   }
 
@@ -20,10 +14,10 @@ class VirtualDom {
     return this._realDom;
   }
 
-  public update(node: VirtualDomNode) {
+  public patch(node: VirtualDomNode) {
     this._tree = node;
 
-    this._realDom.updateBaseElement(node);
+    this._realDom.patchBaseElement(this._tree);
   }
 }
 

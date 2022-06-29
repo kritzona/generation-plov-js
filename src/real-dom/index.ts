@@ -3,41 +3,39 @@ import VirtualDomElementNode from '@/virtual-dom/nodes/virtual-dom-element-node'
 import { VirtualDomNode } from '@/virtual-dom/types';
 
 class RealDom {
-  private _baseElement: HTMLElement;
+  private _baseElement: isNullable<HTMLElement> = null;
 
-  constructor(node: VirtualDomNode) {
-    this._baseElement = this._baseElementFactory(node);
-  }
-
-  public get baseElement(): HTMLElement {
+  public get baseElement(): isNullable<HTMLElement> {
     return this._baseElement;
   }
 
   private _baseElementFactory(node: VirtualDomNode): HTMLElement {
-    const { children } = node;
+    const { children, props } = node;
 
-    let element;
-    if (node instanceof VirtualDomComponentNode) {
-      const { component } = node;
+    const element = this._baseElement || this._domElementFactory(node);
 
-      element = component.baseElement;
-    } else {
-      element = this._domElementFactory(node);
+    if (this._baseElement) {
+      const childNodes = Array.from(element.childNodes);
+      childNodes.forEach((node) => node.remove());
     }
 
-    children.forEach((nodeChild) => {
-      if (typeof nodeChild === 'string') {
-        element.appendChild(document.createTextNode(nodeChild));
+    for (const [prop, value] of Object.entries(props)) {
+      element.setAttribute(prop, value);
+    }
+
+    children.forEach((childNode) => {
+      if (typeof childNode === 'string') {
+        element.appendChild(document.createTextNode(childNode));
 
         return;
       }
 
-      if (nodeChild instanceof VirtualDomElementNode) {
-        element.appendChild(this._domElementFactory(nodeChild));
+      if (childNode instanceof VirtualDomElementNode) {
+        element.appendChild(this._domElementFactory(childNode));
       }
 
-      if (nodeChild instanceof VirtualDomComponentNode) {
-        const { component } = nodeChild;
+      if (childNode instanceof VirtualDomComponentNode) {
+        const { component } = childNode;
 
         component.mount(element);
       }
@@ -47,34 +45,34 @@ class RealDom {
   }
 
   private _domElementFactory(node: VirtualDomNode): HTMLElement {
-    const { props } = node;
+    let element: HTMLElement;
 
-    let element;
+    const fallbackElement = document.createElement('div');
 
     if (node instanceof VirtualDomElementNode) {
       const { tagName } = node;
 
       element = document.createElement(tagName);
-
-      for (const [prop, value] of Object.entries(props)) {
-        element.setAttribute(prop, value);
-      }
     } else if (node instanceof VirtualDomComponentNode) {
       const { component } = node;
 
-      element = component.baseElement;
+      element = component.baseElement || fallbackElement;
     } else {
-      element = document.createElement('div');
+      element = fallbackElement;
     }
 
     return element;
   }
 
   public mount(parentElement: HTMLElement) {
+    if (!this._baseElement) {
+      return;
+    }
+
     parentElement.appendChild(this._baseElement);
   }
 
-  public updateBaseElement(node: VirtualDomNode) {
+  public patchBaseElement(node: VirtualDomNode) {
     this._baseElement = this._baseElementFactory(node);
   }
 }

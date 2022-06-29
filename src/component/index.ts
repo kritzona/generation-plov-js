@@ -6,18 +6,16 @@ abstract class Component<
   P extends MaybeEmptyObject<AnyObject>,
   S extends MaybeEmptyObject<AnyObject>
 > {
-  private _virtualDom = new VirtualDom(this.render());
-
-  private _initialProps: Partial<P> = {};
+  private _virtualDom: VirtualDom = new VirtualDom();
 
   private _props: Partial<P> = {};
   private _state: Partial<S> = {};
 
   constructor(props: P) {
-    this._initialProps = props;
+    this._props = props;
   }
 
-  protected get props() {
+  protected get props(): Partial<P> {
     return this._props;
   }
 
@@ -25,7 +23,7 @@ abstract class Component<
     this._props = subscribeOnChange<P>(value, () => this.update());
   }
 
-  protected get state() {
+  protected get state(): Partial<S> {
     return this._state;
   }
 
@@ -33,19 +31,19 @@ abstract class Component<
     this._state = subscribeOnChange<S>(value, () => this.update());
   }
 
-  public get baseElement(): HTMLElement {
+  public get baseElement(): isNullable<HTMLElement> {
     return this._virtualDom.realDom.baseElement;
   }
 
   public create(): void {
     this.onCreateStart();
 
-    this.props = this._initialProps;
+    this._virtualDom.patch(this.render());
 
     this.onCreateEnd();
   }
 
-  public mount(parentElement: HTMLElement) {
+  public mount(parentElement: HTMLElement): void {
     this.onMountStart();
 
     this._virtualDom.realDom.mount(parentElement);
@@ -53,10 +51,10 @@ abstract class Component<
     this.onMountEnd();
   }
 
-  public update() {
+  public update(): void {
     this.onUpdateStart();
 
-    this._virtualDom.update(this.render());
+    this._virtualDom.patch(this.render());
 
     this.onUpdateEnd();
   }
